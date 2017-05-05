@@ -7,6 +7,10 @@ def set_pixel(ser, x, y, red, green, blue):
   control_string = bytearray([pixel,red,green,blue, 255])
   ser.write(control_string)
 
+def end_frame(ser):
+  control_string = bytearray([254])
+  ser.write(control_string)
+
 def xy_to_pixel(x,y):
   row_offset = y * 12
   if y % 2 == 0:

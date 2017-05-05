@@ -2,11 +2,11 @@ import serial
 import time, math
 import ledutils
 
-# ser = serial.Serial(
-#     #port='/dev/ttyACM0',
-#     port='/dev/ttyUSB0',
-#     baudrate=115200
-# )
+ser = serial.Serial(
+    #port='/dev/ttyACM0',
+    port='/dev/ttyUSB0',
+    baudrate=115200
+)
 
 # So! Apparently when you connect to the arduino serial port, the bootloader
 # kicks in, resets the arduino and waits a second for a new program to be loaded
@@ -53,6 +53,7 @@ def show_frame(pix):
   for i in range(xMax):
     for j in range(yMax):
       ledutils.set_pixel(ser, i, j, *pix[i, j])
+  ledutils.end_frame(ser)
 
 
 def zoom_viewport(factor, x, y):
@@ -73,4 +74,5 @@ while True:
   set_pixels(pix)
   zoom_viewport(1.5, 0, 0.25)
   show_frame(pix)
+  time.sleep(1)
   # img.show()
