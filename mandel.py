@@ -71,7 +71,7 @@ pix = img.load()
 
 while True:
   set_pixels(pix)
-  zoom_viewport(1.5, 0, 0.25)
+  zoom_viewport(1.5, -1.257, 0.378)
   show_frame(pix)
   time.sleep(1)
   # img.show()
