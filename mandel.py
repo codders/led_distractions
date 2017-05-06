@@ -1,16 +1,7 @@
-import serial
 import time, math
 from arduino_lights import ledutils
 
-ser = serial.Serial(
-    port='/dev/ttyUSB0',
-    baudrate=115200
-)
-
-# So! Apparently when you connect to the arduino serial port, the bootloader
-# kicks in, resets the arduino and waits a second for a new program to be loaded
-# before running the actual already stored code
-time.sleep(2)
+ser = ledutils.serial_port()
 
 xMax = 12
 yMax = 12
