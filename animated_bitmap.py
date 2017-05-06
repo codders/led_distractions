@@ -1,6 +1,6 @@
 import serial, Image
 import time, math
-import ledutils
+from arduino_lights import ledutils
 
 ser = serial.Serial(
     #port='/dev/ttyACM0',
