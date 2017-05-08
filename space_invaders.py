@@ -1,18 +1,18 @@
 import time
-from arduino_lights import ledutils
+import arduino_lights as al
 
-ser = ledutils.serial_port()
+ser = al.connect()
 
 x = 0
 y = 0
 first = True
 while(True):
   if not first:
-    ledutils.set_pixel(ser, x, y, 0, 0, 0)
+    al.set_pixel(ser, x, y, 0, 0, 0)
   first = False
   x = (x + 1) % 12
   if x == 0:
     y = (y + 1) % 12
-  ledutils.set_pixel(ser, x, y, 0, 255, 0)
-  ledutils.end_frame(ser)
+  al.set_pixel(ser, x, y, 0, 255, 0)
+  al.end_frame(ser)
   time.sleep(0.05)

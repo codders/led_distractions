@@ -1,8 +1,8 @@
 import Image
 import time, math
-from arduino_lights import ledutils
+import arduino_lights as al
 
-ser = ledutils.serial_port()
+ser = al.connect()
 
 def render_image(image_path):
   img = Image.open("images/" + image_path)
@@ -10,19 +10,19 @@ def render_image(image_path):
   size = 12,12
   sleep_time = 0.002
 
-  ledutils.end_frame(ser)
+  al.end_frame(ser)
 
   print "time per frame: " + str(sleep_time * 144) + "s"
 
   for x in range(12):
     for y in range(12):
       r,g,b = rgb_im.getpixel((x,y))
-      ledutils.set_pixel(ser, x, y, r, g, b)
+      al.set_pixel(ser, x, y, r, g, b)
 
 test = True
-baseball = False 
-cat = False 
-dude = False 
+baseball = True
+cat = False
+dude = False
 
 while(True):
   if test:
