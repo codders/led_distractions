@@ -17,7 +17,7 @@ def render_image(image_path):
   for x in range(12):
     for y in range(12):
       r,g,b = rgb_im.getpixel((x,y))
-      al.set_pixel(ser, x, y, r, g, b)
+      al.set_pixel(ser, (x, y), r, g, b)
 
 test = True
 baseball = True

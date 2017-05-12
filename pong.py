@@ -5,12 +5,12 @@ ser = al.connect()
 
 def paddel(x, y):
   for h in range(y-1, y+2):
-    al.set_pixel(ser, x, h, 0, 255, 0)
+    al.set_pixel(ser, (x, h), 0, 255, 0)
 
 def clear():
   for x in range(0, 12):
     for y in range(0, 12):
-      al.set_pixel(ser, x, y, 0, 0, 0)
+      al.set_pixel(ser, (x, y), 0, 0, 0)
 
 ballx = 5
 bally = 11
@@ -31,7 +31,7 @@ while(True):
   if deltax > 0:
     active_paddel = 1
 
-  al.set_pixel(ser, ballx, bally, 0, 255, 0)
+  al.set_pixel(ser, (ballx, bally), 0, 255, 0)
 
   if paddels[active_paddel] != bally:
     diff = bally - paddels[active_paddel]

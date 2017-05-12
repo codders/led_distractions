@@ -46,7 +46,7 @@ def set_pixels(pix):
 def show_frame(pix):
   for i in range(LED_SIZE.w):
     for j in range(LED_SIZE.h):
-      al.set_pixel(ser, i, j, *pix[i, j])
+      al.set_pixel(ser, (i, j), *pix[i, j])
   al.end_frame(ser)
 
 
