@@ -11,6 +11,7 @@ This collection of scripts are designed to drive a 12x12 matrix display for NeoP
    - [Dependencies](#dependencies)
    - [Running as a Service](#running-as-a-service)
  - [Usage](#usage)
+ - [Building](#building)
  - [Maintainer](#maintainer)
  - [Contribute](#contribute)
 
@@ -54,6 +55,20 @@ All of the scripts expect to render to the NeoPixel matrix display, connecting o
 The scripts can be run directly with python or ruby and in addition, the [led-distractions](led-distractions) wrapper script is provided which will look for scripts in the `/usr/share/led-distractions` folder and run one of them at random.
 
 If [led-distractions](led-distractions) is run as a service on startup using the supplied [systemd unit file](rcscripts/led-distractions.service), each visualisation will run for a short period of time before the service is automatically restarted to trigger a different (or possibly the same) script.
+
+## Building
+
+Configuration files are supplied for Debian packaging. Use `debuild` to rebuild the package:
+
+```
+debuild --no-tgz-check
+```
+
+which will create appropriate architecture-independent Debian packages in the parent directory. When updating the package, us `dch` to update the changelog:
+
+```
+dch -v 0.0.3
+```
 
 ## Maintainer
 
