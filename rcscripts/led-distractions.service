@@ -1,0 +1,11 @@
+[Unit]
+Description=LED Distractions
+
+[Service]
+RestartSec=5
+Restart=on-failure
+DefaultTimeoutStopSec=5
+ExecStart=/usr/bin/led-distractions
+
+[Install]
+WantedBy=multi-user.target
