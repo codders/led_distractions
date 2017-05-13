@@ -1,0 +1,17 @@
+#!/bin/bash
+
+FOLDER=/usr/share/led_distractions
+SCRIPT=`ls ${FOLDER}/*.rb ${FOLDER}/*.py | sort -R | head -n1`
+if [ -z $SCRIPT ]; then
+  echo "No visualisations found"
+  exit 1
+fi
+
+if [[ $SCRIPT == *.rb ]]; then
+  exec ruby $SCRIPT
+elif [[ $SCRIPT == *.py ]]; then
+  exec python $SCRIPT
+else
+  echo "Unable to run file $SCRIPT - unknown interpreter"
+  exit 1
+fi

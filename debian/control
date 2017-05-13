@@ -1,0 +1,16 @@
+Source: led-distractions
+Section: games
+Priority: optional
+Maintainer: Arthur Taylor
+Vcs-Git: https://github.com/craftcodiness/led_distractions
+Vcs-Browser: https://github.com/craftcodiness/led_distractions
+
+Package: led-distractions
+Architecture: all
+Multi-Arch: foreign
+Depends:
+Priority: optional
+Description: LED Distractions - simple visualisations for NeoPixel displays
+ This package contains a set of simple LED visualisations that render to
+ NeoPixel matrix displays.
+
