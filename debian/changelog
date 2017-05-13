@@ -1,3 +1,9 @@
+led-distractions (0.0.2) jessie; urgency=medium
+
+  * Added watchdog timer to systemd script 
+
+ -- Arthur Taylor <arthur.taylor@gmail.com>  Sat, 13 May 2017 18:31:07 +0200
+
 led-distractions (0.0.1) jessie; urgency=medium
 
   * Initial release.
