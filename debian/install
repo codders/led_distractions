@@ -1,7 +1,9 @@
 images usr/share/led_distractions/
+colorgen.py usr/share/led_distractions/
 mandel.py usr/share/led_distractions/
 pong.py usr/share/led_distractions/
 space_invaders.py usr/share/led_distractions/
 starfield.rb usr/share/led_distractions/
+fire.py usr/share/led_distractions/
 led-distractions usr/bin/
 rcscripts/led-distractions.service lib/systemd/system/

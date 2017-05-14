@@ -2,8 +2,10 @@
 Description=LED Distractions
 
 [Service]
-RestartSec=5
-Restart=on-failure
+Type=simple
+WatchdogSec=300
+RestartSec=1
+Restart=always
 DefaultTimeoutStopSec=5
 ExecStart=/usr/bin/led-distractions
 

@@ -1,3 +1,21 @@
+led-distractions (0.0.4) jessie; urgency=medium
+
+  * Add fire script to installer 
+
+ -- Arthur Taylor <at@blaenwern>  Sun, 14 May 2017 15:54:16 +0200
+
+led-distractions (0.0.3) jessie; urgency=medium
+
+  * Added fire visualisation 
+
+ -- Arthur Taylor <arthur.taylor@gmail.com>  Sun, 14 May 2017 15:04:07 +0200
+
+led-distractions (0.0.2) jessie; urgency=medium
+
+  * Added watchdog timer to systemd script 
+
+ -- Arthur Taylor <arthur.taylor@gmail.com>  Sat, 13 May 2017 18:31:07 +0200
+
 led-distractions (0.0.1) jessie; urgency=medium
 
   * Initial release.
