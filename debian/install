@@ -1,4 +1,5 @@
 images usr/share/led_distractions/
+colorgen.py usr/share/led_distractions/
 mandel.py usr/share/led_distractions/
 pong.py usr/share/led_distractions/
 space_invaders.py usr/share/led_distractions/
