@@ -1,3 +1,9 @@
+led-distractions (0.0.4) jessie; urgency=medium
+
+  * Add fire script to installer 
+
+ -- Arthur Taylor <at@blaenwern>  Sun, 14 May 2017 15:54:16 +0200
+
 led-distractions (0.0.3) jessie; urgency=medium
 
   * Added fire visualisation 
