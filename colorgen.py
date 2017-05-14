@@ -32,7 +32,7 @@ def sample_gradient_palette(alpha):
                  for c in range(3))
 
 
-# Settings for the following function to get difference color harmonies
+# Settings for the following function to get different color harmonies
 HARMONIES = {
     'complementary': (180, 0, 45, 45, 0),
     'split-complementary': (150, 210, 30, 30, 30),
