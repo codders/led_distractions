@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+'''Classic Nokia 6110 snake game'''
 from __future__ import division
 import time
 from collections import deque
@@ -7,17 +8,19 @@ import random
 from arduino_lights import LED_SIZE, Size
 import colorgen
 import logging
+import argparse
 
 
 COLOR_SNAKE = (0, 0, 0)
-COLOR_BG = (30, 200, 40)
+COLOR_BG = (30, 180, 40)
 COLOR_FOOD = (210, 100, 10)
 COLOR_DEAD = (230, 20, 20)
 
 DIRECTIONS = {
-    'left': (-1, 0),
+    # keep things mod(LED_SIZE), makes things nice
+    'left': (-1 % LED_SIZE.w, 0),  # (11, 0)
     'right': (1, 0),
-    'up': (0, -1),
+    'up': (0, -1 % LED_SIZE.h),  # (0, 11)
     'down': (0, 1),
 }
 
@@ -33,26 +36,30 @@ def add_food(bl):
     global food
     while food is None or food in snake_points:
         food = (random.randint(0, LED_SIZE.w), random.randint(0, LED_SIZE.h))
+    logging.debug('food %s', food)
     al.set_pixel(bl, food, *COLOR_FOOD)
 
 
 def choose_direction():
-    direction = None
+    new_dir = None
     head, neck = snake[-1], snake[-2]
-    dir_backwards = tuple(neck[i] - head[i] % LED_SIZE[i] for i in xrange(2))
-    logging.debug('snake %s', snake)
-    logging.debug('backwards %s', dir_backwards)
+    backwards = tuple((neck[i] - head[i]) % LED_SIZE[i] for i in xrange(2))
+    logging.debug('head %s neck %s: backwards %s', head, neck, backwards)
     while True:
-        direction = random.choice(DIRECTIONS.values())
-        if direction != dir_backwards:
+        new_dir = random.choice(DIRECTIONS.values())
+        if new_dir != backwards and new_dir != direction:
             break  # python, WHY U NO DO WHILE??
-    logging.debug('chose %s', direction)
-    return direction
+    logging.debug('chose %s', new_dir)
+    return new_dir
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--debug', action='store_true', help='debug logging')
+    args = parser.parse_args()
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
+
     random.seed()
-    logging.basicConfig(level=logging.DEBUG)
 
     bl = al.connect()
     al.clear(bl, *COLOR_BG, autoend=False)
@@ -66,8 +73,7 @@ if __name__ == '__main__':
         # logging.debug('points %s', snake_points)
         # logging.debug('direction %s', direction)
         head = snake[-1]
-        head = ((head[0] + direction[0]) % LED_SIZE.w,
-                (head[1] + direction[1]) % LED_SIZE.h)
+        head = tuple((head[i] + direction[i]) % LED_SIZE[i] for i in xrange(2))
         if head in snake_points:
             # collision! game over
             for p in snake:
@@ -84,6 +90,7 @@ if __name__ == '__main__':
             # ate the food, got bigger
             food = None
             eatten += 1
+            logging.debug('ate food! fatness: %d', eatten)
         else:
             # didn't eat food, move tail forward
             tail = snake.popleft()
@@ -93,7 +100,8 @@ if __name__ == '__main__':
 
         if random.random() < 0.1:
             direction = choose_direction()
-        if random.random() < 0.05:
+        if food is None and random.random() < 0.15:
             add_food(bl)
+        logging.debug('food is at %s', food)
 
         time.sleep(0.1)
