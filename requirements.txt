@@ -1,0 +1,3 @@
+arduino-lights>=0.7.3
+scurve==0.2
+pytest==3.1.0
