@@ -29,8 +29,9 @@ def frange(start, end, step=1.0, steps=0):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--curve', help='Curve type', default='hilbert',
-                        choices=['hilbert', 'zorder', 'zigag', 'natural'])
+    parser.add_argument('--curve', help='curve type (default: hilbert)',
+                        default='hilbert',
+                        choices=['hilbert', 'zorder', 'zigzag', 'natural'])
     parser.add_argument('--palette-size', type=int, default=3)
     parser.add_argument('--steps', type=int, default=30)
     parser.add_argument('--pan', action='store_true')
