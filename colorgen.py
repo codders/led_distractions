@@ -24,13 +24,17 @@ def sample_palette(alpha):
 def sample_gradient_palette(alpha):
     '''Maps floats in the range [0, 1] into a smooth, linear gradient
     generated from the palette'''
-    idx = int((len(palette) - 1) * alpha)
-    color1 = palette[idx]
+    idx = (len(palette) - 1) * alpha
+    color1 = palette[int(idx)]
     if alpha == 1.0:
         return color1  # no next color
-    color2 = palette[idx + 1]
-    # linearly interpolate between these two
-    return tuple(int(color1[c] + (color2[c] - color1[c]) * alpha)
+    color2 = palette[int(idx) + 1]
+
+    # fractional part of idx, the amount we're in between color1 and color2
+    beta = idx % 1.0
+
+    # linearly interpolate
+    return tuple(int(color1[c] + (color2[c] - color1[c]) * beta)
                  for c in range(3))
 
 
