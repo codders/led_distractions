@@ -20,7 +20,7 @@ def symetric_gradient(alpha):
 
 def frange(start, end, step=1.0, steps=0):
     if steps:
-        step = (start - end)/steps
+        step = (end - start)/steps
     curr = start
     while curr < end:
         yield curr
@@ -31,33 +31,40 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--curve', help='curve type (default: hilbert)',
                         default='hilbert',
-                        choices=['hilbert', 'zorder', 'zigzag', 'natural'])
+                        choices=['hilbert', 'hcurve', 'zorder', 'zigzag', 'natural', 'gray'])
     parser.add_argument('--palette-size', type=int, default=3)
-    parser.add_argument('--steps', type=int, default=30)
+    parser.add_argument('--steps', type=int, default=100)
     parser.add_argument('--pan', action='store_true')
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
-    # h = scruve.hilbert.Hilbert(2, 4)
-    h = scurve.fromSize(args.curve, 2, 256)
-    size = len(h)
+    curve = scurve.fromSize(args.curve, 2, 256)
+    size = len(curve)
+
+    # because the hcurve cannot tell us an index from coordinates,
+    # create a map of coordinates to alpha values by iterating over the
+    # indices of the curve
+    alpha_map = {}
+    for i, p in enumerate(curve):
+        alpha_map[tuple(p)] = i / size
+
     colorgen.randomize_palette(args.palette_size, 'triadic')
     logging.debug('Chose palette %s', str(colorgen.palette))
-
+    pan_speed = 4
     con = al.connect()
     while True:
-        for offset in frange(0.0, 1.0, steps=args.steps):
+        for offset in frange(0.0, 15.0, 1.0/args.steps):
             for x in range(LED_SIZE.w):
                 for y in range(LED_SIZE.h):
                     # correct for the fact that the 256-point curve (16x16)
                     # does not fit on a 12x12 square
+                    p = None
                     if args.pan:
-                        p = [int(x + 4*offset), int(y + 4*offset)]
+                        p = (int(x + pan_speed*offset) % 16, int(y + pan_speed*offset) % 16)
                     else:
-                        p = [x + 2, y + 2]
-                    a = h.index(p) / size
-                    color = symetric_gradient((a + offset) % 1.0)
+                        p = (x + 2, y + 2)
+                    color = symetric_gradient((alpha_map[p] + offset) % 1.0)
                     al.set_pixel(con, (x, y), *color)
             al.end_frame(con)
             time.sleep(0.05)
