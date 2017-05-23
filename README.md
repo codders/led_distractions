@@ -23,17 +23,17 @@ This collection of scripts are designed to drive a 12x12 matrix display for NeoP
 
 ### Dependencies
 
-Whether you are using the Debian package or running the scripts directly, you will need to install the Ruby and Python dependencies. The scripts depend on the [arduino-lights](https://github.com/craftcodiness/arduino-lights) project.
+Whether you are using the Debian package or running the scripts directly, you will need to install the Ruby and Python dependencies. The scripts depend on the [arduino-lights](https://github.com/craftcodiness/arduino-lights) project and a few other small python packages.
 
 ```
 gem install arduino-lights
-pip install arduino_lights
+pip install -r requirements.txt
 ```
 
 ### Running as a Service
 
 The project includes a [systemd unit file](rcscripts/led-distractions.service) that you can install to `/lib/systemd/system` on your systemd-enabled system. The Debian package will do this for you automatically.
- 
+
 If you are using `rvm` to manage your Ruby environment, you might need to create a global Gemset and link a wrapper script to `/usr/bin/ruby` to allow the service to find the correct version of ruby and its dependencies.
 
 ```
