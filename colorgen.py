@@ -6,6 +6,7 @@ import colorsys
 import random
 import operator
 from itertools import izip
+import scurve
 
 
 # Global palette, yes, we're hacking here!
@@ -36,6 +37,18 @@ def sample_gradient_palette(alpha):
     # linearly interpolate
     return tuple(int(color1[c] + (color2[c] - color1[c]) * beta)
                  for c in range(3))
+
+
+def symetric_gradient(alpha):
+    '''Sample the palette as a symetric gradient by compressing the original
+    gradient to the interval [0, 0.5) and reflecting the original
+    gradient for the second half of the alpha interval [0.5, 1].'''
+    assert alpha <= 1.0
+    if alpha < 0.5:
+        alpha = 2 * alpha
+    else:
+        alpha = 2 * (1 - alpha)
+    return sample_gradient_palette(alpha)
 
 
 # Settings for the following function to get different color harmonies
@@ -131,3 +144,20 @@ def randomize_palette(n=2, harmony='triadic',
                    for h, l, s in izip(hues, lightnesses, saturations))
 
 
+def hilbert_rainbow(n=512):
+    '''Generate a hilbert rainbow palette, that is, a Hilbert ordering of the
+    colors in the 3D RGB color cube. As the Hilbert spacefilling curve has
+    near-optimal locality preserving properties, colors that are similar will
+    appear close to eachother in the ordering, generating a crazy fractal
+    rainbow that visits every single color.
+    For more see https://corte.si/posts/code/hilbert/portrait/index.html
+
+    n is the size of the palette, must be an interger of the form 2**(3*k)
+    '''
+    global palette
+    hilbert3 = scurve.fromSize('hilbert', 3, n)
+    palette = []
+    dsize = hilbert3.dimensions()
+    for point in hilbert3:
+        fcolor = tuple(c/(s - 1) for c, s in zip(point, dsize))
+        palette.append(to_int_color(fcolor))

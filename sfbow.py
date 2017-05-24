@@ -10,14 +10,6 @@ from arduino_lights import LED_SIZE, LED_COUNT
 import colorgen
 
 
-def symetric_gradient(alpha):
-    assert alpha <= 1.0
-    if alpha < 0.5:
-        return colorgen.sample_gradient_palette(2*alpha)
-    else:
-        return colorgen.sample_gradient_palette(2*(1 - alpha))
-
-
 def frange(start, end, step=1.0, steps=0):
     if steps:
         step = (end - start)/steps
@@ -32,8 +24,9 @@ if __name__ == '__main__':
     parser.add_argument('--curve', help='curve type (default: hilbert)',
                         default='hilbert',
                         choices=['hilbert', 'hcurve', 'zorder', 'zigzag', 'natural', 'gray'])
+    parser.add_argument('--rainbow', action='store_true', help='use hilbert rainbow')
     parser.add_argument('--palette-size', type=int, default=3)
-    parser.add_argument('--steps', type=int, default=100)
+    parser.add_argument('--steps', type=int, default=100, help='timesteps to complete a cycle')
     parser.add_argument('--pan', action='store_true')
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
@@ -49,8 +42,15 @@ if __name__ == '__main__':
     for i, p in enumerate(curve):
         alpha_map[tuple(p)] = i / size
 
-    colorgen.randomize_palette(args.palette_size, 'triadic')
+    colorfn = None
+    if args.rainbow:
+        colorgen.hilbert_rainbow(args.palette_size)
+        colorfn = colorgen.sample_gradient_palette
+    else:
+        colorgen.randomize_palette(args.palette_size, 'triadic')
+        colorfn = colorgen.symetric_gradient
     logging.debug('Chose palette %s', str(colorgen.palette))
+
     pan_speed = 4
     con = al.connect()
     while True:
@@ -64,7 +64,7 @@ if __name__ == '__main__':
                         p = (int(x + pan_speed*offset) % 16, int(y + pan_speed*offset) % 16)
                     else:
                         p = (x + 2, y + 2)
-                    color = symetric_gradient((alpha_map[p] + offset) % 1.0)
+                    color = colorfn((alpha_map[p] + offset) % 1.0)
                     al.set_pixel(con, (x, y), *color)
             al.end_frame(con)
             time.sleep(0.05)
