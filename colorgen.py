@@ -17,9 +17,15 @@ palette = [
 ]
 
 
+def lerp(color1, color2, alpha):
+    '''Linear interpolation between color1 and color2: find a point
+    between the two colors that is alpha (elementof [0,1]) of the way
+    between them.'''
+    return tuple(int(c1 + (c2 - c1) * alpha) for c1, c2 in izip(color1, color2))
+
 def sample_palette(alpha):
     '''Map a float in range [0, 1] into the palette'''
-    return palette[int(alpha * len(palette))]
+    return palette[int(alpha * (len(palette) - 1))]
 
 
 def sample_gradient_palette(alpha):
@@ -30,13 +36,8 @@ def sample_gradient_palette(alpha):
     if alpha == 1.0:
         return color1  # no next color
     color2 = palette[int(idx) + 1]
-
     # fractional part of idx, the amount we're in between color1 and color2
-    beta = idx % 1.0
-
-    # linearly interpolate
-    return tuple(int(color1[c] + (color2[c] - color1[c]) * beta)
-                 for c in range(3))
+    return lerp(color1, color2, idx % 1.0)
 
 
 def symetric_gradient(alpha):
@@ -49,6 +50,15 @@ def symetric_gradient(alpha):
     else:
         alpha = 2 * (1 - alpha)
     return sample_gradient_palette(alpha)
+
+
+def cyclic_gradient(alpha):
+    '''Sample the palette as a gradient that loops around from the last color
+    to the first.'''
+    idx = len(palette) * alpha
+    color1 = palette[int(idx) % len(palette)]
+    color2 = palette[int(idx + 1) % len(palette)]
+    return lerp(color1, color2, idx % 1.0)
 
 
 # Settings for the following function to get different color harmonies
@@ -146,10 +156,11 @@ def randomize_palette(n=2, harmony='triadic',
 
 def hilbert_rainbow(n=512):
     '''Generate a hilbert rainbow palette, that is, a Hilbert ordering of the
-    colors in the 3D RGB color cube. As the Hilbert spacefilling curve has
-    near-optimal locality preserving properties, colors that are similar will
-    appear close to eachother in the ordering, generating a crazy fractal
-    rainbow that visits every single color.
+    points in the RGB color cube. As the Hilbert spacefilling curve has
+    near-optimal locality preserving properties, selected colors will be
+    maximally distinct while those that are similar will appear close to
+    eachother in the ordering, generating a crazy fractal rainbow that
+    visits every single color.
     For more see https://corte.si/posts/code/hilbert/portrait/index.html
 
     n is the size of the palette, must be an interger of the form 2**(3*k)

@@ -36,3 +36,26 @@ def test_gradient_interpolation_3_colors(palette3):
     assert color == (100, 100, 100)
     color = colorgen.sample_gradient_palette(0.75)
     assert color == (150, 150, 150)
+
+
+@pytest.mark.parametrize('alpha,expected', [
+    (0.0, (200, 200, 0)),
+    (0.25, (150, 100, 100)),
+    (0.5, (100, 0, 200)),
+    (0.75, (150, 100, 100)),
+    (1.0, (200, 200, 0)),
+])
+def test_cyclic_gradient(palette2, alpha, expected):
+    color = colorgen.cyclic_gradient(alpha)
+    assert color == expected
+
+@pytest.mark.parametrize('alpha,expected', [
+    (0.0, (0, 0, 0)),
+    (0.25, (0, 0, 0)),
+    (0.5, (100, 100, 100)),
+    (0.75, (100, 100, 100)),
+    (1.0, (200, 200, 200)),
+])
+def test_index_sample(palette3, alpha, expected):
+    color = colorgen.sample_palette(alpha)
+    assert color == expected

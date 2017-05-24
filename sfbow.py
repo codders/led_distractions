@@ -45,7 +45,7 @@ if __name__ == '__main__':
     colorfn = None
     if args.rainbow:
         colorgen.hilbert_rainbow(args.palette_size)
-        colorfn = colorgen.sample_gradient_palette
+        colorfn = colorgen.cyclic_gradient
     else:
         colorgen.randomize_palette(args.palette_size, 'triadic')
         colorfn = colorgen.symetric_gradient
