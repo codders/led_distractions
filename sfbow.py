@@ -53,6 +53,8 @@ if __name__ == '__main__':
 
     pan_speed = 4
     con = al.connect()
+    frames = 0
+    last = time.time()
     while True:
         for offset in frange(0.0, 15.0, 1.0/args.steps):
             for x in range(LED_SIZE.w):
@@ -67,4 +69,9 @@ if __name__ == '__main__':
                     color = colorfn((alpha_map[p] + offset) % 1.0)
                     al.set_pixel(con, (x, y), *color)
             al.end_frame(con)
-            time.sleep(0.05)
+            frames += 1
+            if frames % 60 == 0:
+                now = time.time()
+                logging.info('fps %.3f', 60/(now - last))
+                last = now
+            #time.sleep(0.05)
