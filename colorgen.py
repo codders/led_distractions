@@ -2,10 +2,11 @@
 different visualisations.
 '''
 from __future__ import division
-import colorsys
 import random
+import math
 import operator
 from itertools import izip
+import colorsys
 import scurve
 
 
@@ -25,7 +26,7 @@ def lerp(color1, color2, alpha):
 
 def sample_palette(alpha):
     '''Map a float in range [0, 1] into the palette'''
-    return palette[int(alpha * (len(palette) - 1))]
+    return palette[int(round(alpha * (len(palette) - 1)))]
 
 
 def sample_gradient_palette(alpha):
