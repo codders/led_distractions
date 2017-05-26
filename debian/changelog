@@ -1,3 +1,9 @@
+led-distractions (0.0.5) jessie; urgency=medium
+
+  * Add colorgen.py 
+
+ -- Arthur Taylor <arthur.taylor@gmail.com>  Sun, 14 May 2017 19:22:46 +0200
+
 led-distractions (0.0.4) jessie; urgency=medium
 
   * Add fire script to installer 
