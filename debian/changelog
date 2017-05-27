@@ -1,3 +1,9 @@
+led-distractions (0.0.6) jessie; urgency=medium
+
+  * Added tetris.rb
+
+ -- Arthur Taylor <arthur.taylor@gmail.com>  Sat, 27 May 2017 17:33:24 +0200
+
 led-distractions (0.0.5) jessie; urgency=medium
 
   * Add colorgen.py 
