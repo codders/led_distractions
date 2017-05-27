@@ -135,29 +135,28 @@ end
 screen = Screen.new
 screen.draw
 
-blocks = []
+block = nil
 
 frame = 0
 while true do
-  if frame % 4 == 0
-    new_block = Block.new(@shapes.sample, rand(4), @colors.sample, rand(12))
-    if new_block.can_fall?(screen)
-      blocks << new_block
-    else
-      puts "Screen is full. Resetting"
-      blocks = []
+  if block.nil?
+    block = Block.new(@shapes.sample, rand(4), @colors.sample, rand(12))
+    if !block.can_fall?(screen)
       screen = Screen.new
       screen.draw
+      block = nil
+      next
     end
   end
-  blocks.each do |block|
-    if block.can_fall?(screen)
-      block.clear(screen)
-      block.fall(screen)
-      block.draw(screen) unless block.in_collision?(screen)
-    end
+  if block.can_fall?(screen)
+    block.clear(screen)
+    block.fall(screen)
+    block.draw(screen) unless block.in_collision?(screen)
+  else
+    puts "Block hit the bottom. New block"
+    block = nil
   end
   screen.draw
   frame = frame + 1
-  sleep(0.5)
+  sleep(0.2)
 end
