@@ -3,3 +3,4 @@
 .cache
 .ropeproject
 __pycache__
+.vscode
